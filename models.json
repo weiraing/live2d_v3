@@ -1,0 +1,801 @@
+{
+  "version": 1,
+  "count": 43,
+  "models": [
+    {
+      "path": "Celeste - free",
+      "file": "Celeste.model3.json",
+      "name": "Celeste",
+      "group": "",
+      "parts": [
+        "Celeste - free"
+      ],
+      "motions": 0,
+      "motionGroups": [],
+      "textures": 4,
+      "mocVersion": "4.2",
+      "size": 62354783,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/aidang_2",
+      "file": "aidang_2.model3.json",
+      "name": "aidang_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "aidang_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 4177434,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/aierdeliqi_4",
+      "file": "aierdeliqi_4.model3.json",
+      "name": "aierdeliqi_4",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "aierdeliqi_4"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 5056590,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/aierdeliqi_5",
+      "file": "aierdeliqi_5.model3.json",
+      "name": "aierdeliqi_5",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "aierdeliqi_5"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        "Idle",
+        "TapTouchHead",
+        "TapTouchSpecial",
+        "Tapcat3_frontleg_r"
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 6610249,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/aimierbeierding_2",
+      "file": "aimierbeierding_2.model3.json",
+      "name": "aimierbeierding_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "aimierbeierding_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 3031904,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/banrenma_2",
+      "file": "banrenma_2.model3.json",
+      "name": "banrenma_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "banrenma_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 1737403,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/beierfasite_2",
+      "file": "beierfasite_2.model3.json",
+      "name": "beierfasite_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "beierfasite_2"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 5615341,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/biaoqiang",
+      "file": "biaoqiang.model3.json",
+      "name": "biaoqiang",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "biaoqiang"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 7,
+      "mocVersion": "3.0",
+      "size": 2451677,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/biaoqiang_3",
+      "file": "biaoqiang_3.model3.json",
+      "name": "biaoqiang_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "biaoqiang_3"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 1803037,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/bisimai_2",
+      "file": "bisimai_2.model3.json",
+      "name": "bisimai_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "bisimai_2"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 2003091,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/chuixue_3",
+      "file": "chuixue_3.model3.json",
+      "name": "chuixue_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "chuixue_3"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 3256898,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/dafeng_2",
+      "file": "dafeng_2.model3.json",
+      "name": "dafeng_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "dafeng_2"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 3803911,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/deyizhi_3",
+      "file": "deyizhi_3.model3.json",
+      "name": "deyizhi_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "deyizhi_3"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 2633566,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/dujiaoshou_4",
+      "file": "dujiaoshou_4.model3.json",
+      "name": "dujiaoshou_4",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "dujiaoshou_4"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 1955617,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/dunkeerke_2",
+      "file": "dunkeerke_2.model3.json",
+      "name": "dunkeerke_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "dunkeerke_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 2020271,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/genaisennao_2",
+      "file": "genaisennao_2.model3.json",
+      "name": "genaisennao_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "genaisennao_2"
+      ],
+      "motions": 13,
+      "motionGroups": [
+        "Idle",
+        "Start",
+        "TapTouchBody",
+        "TapTouchHead",
+        "TapTouchSpecial"
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 3795046,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/Haru",
+      "file": "Haru.model3.json",
+      "name": "Haru",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "Haru"
+      ],
+      "motions": 31,
+      "motionGroups": [
+        "Idle",
+        "TapBody"
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 3100154,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/heitaizi_2",
+      "file": "heitaizi_2.model3.json",
+      "name": "heitaizi_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "heitaizi_2"
+      ],
+      "motions": 13,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.3",
+      "size": 6451999,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/huangjiafangzhou_3",
+      "file": "huangjiafangzhou_3.model3.json",
+      "name": "huangjiafangzhou_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "huangjiafangzhou_3"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 5053096,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/huonululu_3",
+      "file": "huonululu_3.model3.json",
+      "name": "huonululu_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "huonululu_3"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 2085215,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/huonululu_5",
+      "file": "huonululu_5.model3.json",
+      "name": "huonululu_5",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "huonululu_5"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.3",
+      "size": 5953054,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/kelifulan_3",
+      "file": "kelifulan_3.model3.json",
+      "name": "kelifulan_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "kelifulan_3"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 4916152,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/lafei",
+      "file": "lafei.model3.json",
+      "name": "lafei",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "lafei"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 6,
+      "mocVersion": "3.0",
+      "size": 3314108,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/lafei_4",
+      "file": "lafei_4.model3.json",
+      "name": "lafei_4",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "lafei_4"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 2914002,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/lingbo",
+      "file": "lingbo.model3.json",
+      "name": "lingbo",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "lingbo"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 4,
+      "mocVersion": "3.0",
+      "size": 1957511,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/mingshi",
+      "file": "mingshi.model3.json",
+      "name": "mingshi",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "mingshi"
+      ],
+      "motions": 17,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 1306062,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/ninghai_4",
+      "file": "ninghai_4.model3.json",
+      "name": "ninghai_4",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "ninghai_4"
+      ],
+      "motions": 13,
+      "motionGroups": [
+        "Idle",
+        "Start",
+        "TapTouchBody",
+        "TapTouchHead",
+        "TapTouchSpecial"
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 4405333,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/pinghai_4",
+      "file": "pinghai_4.model3.json",
+      "name": "pinghai_4",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "pinghai_4"
+      ],
+      "motions": 13,
+      "motionGroups": [
+        "Idle",
+        "Start",
+        "TapTouchBody",
+        "TapTouchHead",
+        "TapTouchSpecial"
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 4527522,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/qibolin_2",
+      "file": "qibolin_2.model3.json",
+      "name": "qibolin_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "qibolin_2"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 4874981,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/shengluyisi_2",
+      "file": "shengluyisi_2.model3.json",
+      "name": "shengluyisi_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "shengluyisi_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 2831422,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/shengluyisi_3",
+      "file": "shengluyisi_3.model3.json",
+      "name": "shengluyisi_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "shengluyisi_3"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 2458507,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/sipeibojue_5",
+      "file": "sipeibojue_5.model3.json",
+      "name": "sipeibojue_5",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "sipeibojue_5"
+      ],
+      "motions": 13,
+      "motionGroups": [
+        "Idle",
+        "Start",
+        "TapTouchBody",
+        "TapTouchHead",
+        "TapTouchSpecial"
+      ],
+      "textures": 1,
+      "mocVersion": "3.3",
+      "size": 3788647,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/taiyuan_2",
+      "file": "taiyuan_2.model3.json",
+      "name": "taiyuan_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "taiyuan_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 2314883,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/tianlangxing_3",
+      "file": "tianlangxing_3.model3.json",
+      "name": "tianlangxing_3",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "tianlangxing_3"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 3018427,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/tierbici_2",
+      "file": "tierbici_2.model3.json",
+      "name": "tierbici_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "tierbici_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 3190270,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/xianghe_2",
+      "file": "xianghe_2.model3.json",
+      "name": "xianghe_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "xianghe_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 5237308,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/xixuegui_4",
+      "file": "xixuegui_4.model3.json",
+      "name": "xixuegui_4",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "xixuegui_4"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 4675727,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/xuefeng",
+      "file": "xuefeng.model3.json",
+      "name": "xuefeng",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "xuefeng"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 6,
+      "mocVersion": "3.0",
+      "size": 2437191,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/yichui_2",
+      "file": "yichui_2.model3.json",
+      "name": "yichui_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "yichui_2"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 1,
+      "mocVersion": "3.0",
+      "size": 5850915,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/z23",
+      "file": "z23.model3.json",
+      "name": "z23",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "z23"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 5,
+      "mocVersion": "3.0",
+      "size": 1665236,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/z46_2",
+      "file": "z46_2.model3.json",
+      "name": "z46_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "z46_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 5332804,
+      "missing": []
+    },
+    {
+      "path": "Azue Lane(JP)/zhala_2",
+      "file": "zhala_2.model3.json",
+      "name": "zhala_2",
+      "group": "Azue Lane(JP)",
+      "parts": [
+        "Azue Lane(JP)",
+        "zhala_2"
+      ],
+      "motions": 15,
+      "motionGroups": [
+        "Idle",
+        "Start",
+        "TapTouchSpecial",
+        "Tapbodylower",
+        "Taphairfront"
+      ],
+      "textures": 1,
+      "mocVersion": "3.3",
+      "size": 5365064,
+      "missing": []
+    },
+    {
+      "path": "用户上传/z46_2",
+      "file": "z46_2.model3.json",
+      "name": "z46_2",
+      "group": "用户上传",
+      "parts": [
+        "用户上传",
+        "z46_2"
+      ],
+      "motions": 14,
+      "motionGroups": [
+        ""
+      ],
+      "textures": 2,
+      "mocVersion": "3.0",
+      "size": 5332804,
+      "missing": []
+    }
+  ]
+}

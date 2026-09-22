@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<!-- viewport-fit=cover：iPhone 刘海屏下让页面铺到安全区，再用 env(safe-area-inset-*) 把内容推回来 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="format-detection" content="telephone=no" />
+<title>Live2D 模型动作预览台</title>
+<link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <!-- 展开 / 收起模型列表侧栏 -->
+    <button class="icon-btn nav-btn" id="btnNav" type="button"
+            title="展开/收起模型列表" aria-label="模型列表" aria-expanded="true" aria-controls="modelList">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+           stroke-width="1.7" stroke-linecap="round">
+        <path d="M2.5 4h11"/><path d="M2.5 8h11"/><path d="M2.5 12h11"/>
+      </svg>
+    </button>
+    <div class="brand">
+      <div class="logo">L2D</div>
+      <h1>Live2D 模型动作预览台</h1>
+    </div>
+    <div class="spacer"></div>
+    <a class="gh-link" id="ghLink" href="https://github.com/weiraing/live2d_v3"
+       target="_blank" rel="noopener noreferrer" title="打开 GitHub 仓库">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+      </svg>
+    </a>
+    <div class="stage-dd" id="stageSeg" title="舞台背景（快捷键 T 循环切换）">
+      <button type="button" class="stage-dd-cur" id="stageSegBtn">
+        <i class="sw-dot" id="stageSegDot" style="background:#1e2531;"></i><span id="stageSegLabel">深色</span>
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M4.4 6.1l3.6 3.6 3.6-3.6"/></svg>
+      </button>
+      <div class="stage-dd-list" id="stageSegList">
+        <div class="stage-dd-opt" data-stage="light"><i class="sw-dot" style="background:#f7f9fc;"></i><span>浅色</span></div>
+        <div class="stage-dd-opt on" data-stage="dark"><i class="sw-dot" style="background:#1e2531;"></i><span>深色</span></div>
+        <div class="stage-dd-opt" data-stage="black"><i class="sw-dot" style="background:#000;"></i><span>黑色</span></div>
+      </div>
+    </div>
+    <button class="icon-btn" id="btnFull" title="全屏播放（整个屏幕只显示模型）">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+           stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2.2 6V2.2H6"/><path d="M10 2.2h3.8V6"/>
+        <path d="M13.8 10v3.8H10"/><path d="M6 13.8H2.2V10"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="main">
+    <aside class="sidebar">
+      <div class="side-head">
+        <div class="t">模型列表</div>
+        <div class="n" id="modelCount">加载中…</div>
+        <!-- 侧栏头右侧的「+」：添加外部模型仓库的清单。
+             弹窗样式复用 .modal-wrap/.modal，与「本地预览」「贡献模型」保持一致。
+             紧贴 .nav-pin 左边 —— 桌面 + 手机端都显示（桌面 + 钉子，手机 + ×）。
+             ⚠️ 必须待在 .side-head 内部 —— 不能成为 .sidebar 的直接子元素，
+             否则会破坏「侧栏只有 4 个直接子元素」的回归断言（_regress / _probe_responsive）。 -->
+        <button class="src-btn" id="btnAddSrc" type="button"
+                title="从其它仓库添加模型：填入 models.json 链接（GitHub 原始地址，或加速前缀 + 原始地址）"
+                aria-label="添加外部模型源">
+          <!-- stroke-width 与同区域的 .nav-close 保持一致（1.8），别自己另起一套 -->
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round">
+            <path d="M8 3v10"/><path d="M3 8h10"/>
+          </svg>
+        </button>
+        <!-- 侧栏头右侧的「固定」切换：钉上后鼠标移到左边框 / 离开侧栏都不会再自动展开折叠。
+             只在桌面显示（手机端没有悬停可言，留着只会让人困惑）。
+             必须待在 .side-head 内部 —— 不能成为 .sidebar 的直接子元素。 -->
+        <button class="nav-pin" id="btnNavPin" type="button" aria-pressed="false"
+                title="钉住菜单列表"
+                aria-label="固定侧栏">
+          <!-- 📌：未启用时灰白（CSS 里 grayscale），启用后恢复彩色 -->
+          <span class="pin-emo">📌</span>
+        </button>
+        <!-- 手机端抽屉里的收起按钮。注意：它必须待在 .side-head 内部，
+             不能成为 .sidebar 的直接子元素 —— 回归断言侧栏只有 4 个直接子元素
+             （.side-head / .search / .model-list / .side-foot） -->
+        <button class="nav-close" id="btnNavClose" type="button" title="收起列表" aria-label="收起模型列表">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 4l8 8"/><path d="M12 4l-8 8"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search" style="margin-top:8px;">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3 14 14"/>
+        </svg>
+        <input type="text" id="modelSearch" placeholder="搜索模型…" autocomplete="off" />
+      </div>
+      <div class="model-list" id="modelList"></div>
+
+      <!-- 本地预览入口：钉在界面左下角（侧栏底部通栏）。
+           点它弹的是对话框而不是系统文件框 —— 对话框里既写明上传要求，
+           又能选择文件 / 直接拖文件进来。见「本地预览对话框」那一节 -->
+      <div class="side-foot">
+        <button class="btn-local" id="btnLocal" type="button"
+                title="本地预览：上传模型压缩包（.zip），在浏览器内解压校验后直接放进预览，不会上传到任何服务器">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.6 10.4v2.2a1 1 0 0 0 1 1h8.8a1 1 0 0 0 1-1v-2.2"/>
+            <path d="M8 2.6v3.8"/><path d="M5.4 4.4 8 2.2l2.6 2.2"/>
+            <rect x="4.5" y="7" width="7" height="2" rx=".8"/>
+          </svg>
+          <span id="btnLocalText">本地预览</span>
+        </button>
+
+        <!-- 贡献模型：把「本地预览成功」的模型上传到本仓库 models/用户上传/<模型名>/。
+             没有本地模型时禁用 —— 需求就是「本地预览成功才能上传」。
+             它和上面那个按钮同属 .side-foot，不增加 .sidebar 的直接子元素。 -->
+        <button class="btn-local btn-contrib" id="btnContrib" type="button"
+                title="把这台机器上预览成功的模型上传到仓库（需要你自己的 GitHub 令牌）">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 13.4V4.2"/><path d="M4.6 8 8 4.4 11.4 8"/>
+            <path d="M2.6 10.4v2.2a1 1 0 0 0 1 1h8.8a1 1 0 0 0 1-1v-2.2"/>
+          </svg>
+          <span id="btnContribText">贡献模型</span>
+        </button>
+        <button class="tbtn btn-danger" id="btnClearCache" title="清除除当前播放模型之外的其他模型缓存" style="width:100%; margin-top:-2px;">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5.5 3V2a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1"/>
+            <path d="M2.5 4h11l-.8 9.2a1 1 0 0 1-1 .8H4.3a1 1 0 0 1-1-.8z"/>
+            <path d="M6.5 7v4"/><path d="M9.5 7v4"/>
+          </svg>
+          清除缓存
+        </button>
+      </div>
+    </aside>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <div id="live2d-canvas-host"></div>
+        <div class="badge" id="badge" style="display:none;">
+          <div class="b1" id="badgeName">—</div>
+          <div class="b2" id="badgeMotion">—</div>
+        </div>
+        <div class="stage-hint" id="stageHint">按住拖动可移动位置 · 滚轮缩放 · 双击切换动作 · 右上角全屏</div>
+        <button class="exit-fs" id="btnExitFs" title="退出全屏（Esc）">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2.2V6H2.2"/><path d="M2.2 10H6v3.8"/>
+            <path d="M10 13.8V10h3.8"/><path d="M13.8 6H10V2.2"/>
+          </svg>
+        </button>
+        <div class="overlay" id="overlay">
+          <div class="spinner" id="ovSpinner"></div>
+          <div class="msg" id="ovMsg">正在初始化…</div>
+          <div class="detail" id="ovDetail"></div>
+        </div>
+        <!-- 提示条容器。位置在舞台内部，见 CSS 里的 .toast-host -->
+        <div class="toast-host" id="toastHost" role="status" aria-live="polite"></div>
+
+        <!-- 本地预览对话框。放在 .stage 内部，理由和提示条一样：全屏时舞台就是整屏。
+             三种进来方式：点「本地预览」、点虚线框选文件、把文件拖到对话框上。
+             上传要求写在这里（不是弹个 toast 就完事），见 CSS 里的 .req-* -->
+        <div class="modal-wrap" id="localModal" hidden>
+          <div class="modal-mask" id="localMask"></div>
+          <div class="modal" role="dialog" aria-modal="true" aria-labelledby="localTitle">
+            <div class="modal-head">
+              <div class="modal-title" id="localTitle">本地预览 · 上传模型压缩包</div>
+              <button class="modal-x" id="btnLocalClose" type="button" aria-label="关闭对话框">×</button>
+            </div>
+            <div class="modal-body">
+              <!-- 落点。拖拽高亮用的是 .over，由 #localModal 的 dragover 统一加 -->
+              <div class="drop" id="localDrop" tabindex="0" role="button"
+                   aria-label="点击选择，或把模型压缩包拖到这里">
+                <svg class="di" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 15.5V3.8"/><path d="M7.6 8.2 12 3.8l4.4 4.4"/>
+                  <path d="M3.8 15v3.4a1.6 1.6 0 0 0 1.6 1.6h13.2a1.6 1.6 0 0 0 1.6-1.6V15"/>
+                </svg>
+                <div class="dm">把模型压缩包拖到这里</div>
+                <div class="ds">或者 <b>点击选择文件</b> · 只收 <code>.zip</code> · 单个不超过 200 MB</div>
+              </div>
+              <input type="file" id="fileLocal" style="display:none"
+                     accept=".zip,application/zip,application/x-zip-compressed" />
+
+              <!-- 处理进度就写在对话框里，不用舞台遮罩（遮罩在对话框下面，看不见） -->
+              <div class="modal-status" id="localStatus" hidden>
+                <span class="loading-mini"></span><span id="localStatusText"></span>
+              </div>
+
+              <!-- 校验失败时把原因写在这里，对话框不关，可以立刻换一个文件再试 -->
+              <div class="modal-err" id="localErr" hidden></div>
+
+              <div class="req">
+                <div class="req-t">上传要求</div>
+                <ul class="req-list">
+                  <li><b>格式</b>：<code>.zip</code> 压缩包，STORE / DEFLATE 都可以。
+                      不支持 <code>.rar</code> / <code>.7z</code>、分卷压缩、带密码的包，以及 ZIP64。</li>
+                  <li><b>大小</b>：单个压缩包不超过 <b>200 MB</b>。</li>
+                  <li><b>模型版本</b>：Live2D Cubism <b>3.0 ~ 5.0</b>（moc3 版本号 1 ~ 5）。
+                      版本高于 5.0 的模型，页面自带的 Core 打不开。</li>
+                  <li><b>必需文件</b>：<code>xxx.model3.json</code>、<code>xxx.moc3</code>，
+                      以及 <code>model3.json</code> 里 <code>FileReferences.Textures</code>
+                      列出的<b>全部贴图</b>（png / jpg / webp 等可识别的图片格式）。
+                      少任何一个都会被拒绝。</li>
+                  <li><b>可选文件</b>：动作 motions / 物理 physics / 姿势 pose / 表情 expressions /
+                      语音 sounds —— 缺了会自动裁掉，仍然可以预览。</li>
+                  <li><b>打包建议</b>：把模型文件夹整个压进去（顶层带一个文件夹名），
+                      一个压缩包只放一个模型；目录层级随意，页面会自动找。</li>
+                  <li><b>隐私</b>：全程在本机浏览器里解压，<b>不会上传到任何服务器</b>。
+                      本地模型只存在于本次会话，刷新页面即消失。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 贡献模型对话框。和本地预览那个一样挂在 .stage 内部（全屏时舞台才是整屏）。
+             上传链路：本机解压出的原始字节 → 逐文件 POST git/blobs → 一次 git/trees + commit + ref 更新。
+             令牌只从浏览器直接发往 api.github.com，页面里没有任何地方会把它写进日志或存档。 -->
+        <div class="modal-wrap" id="contribModal" hidden>
+          <div class="modal-mask" id="contribMask"></div>
+          <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contribTitle">
+            <div class="modal-head">
+              <div class="modal-title" id="contribTitle">贡献模型 · 上传到仓库</div>
+              <button class="modal-x" id="btnContribClose" type="button" aria-label="关闭对话框">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="fld">
+                <div class="fld-t">要上传的模型</div>
+                <select class="inp" id="contribPick"></select>
+                <div class="hint">只能上传本机<b>预览成功</b>的模型 —— 先用上面的「本地预览」把压缩包解出来。</div>
+              </div>
+
+              <!-- 目标仓库：能自己认出来（GitHub Pages 的 *.github.io 地址、或 ?repo= 指定）
+                   就锁定成只读一行；认不出来（本地预览 / 自定义域名）才让用户自己填。
+                   ⚠️ 绝不闷头按 REPO_URL 传 —— 传错仓库等于把几十 MB 公开推到别人家。 -->
+              <div class="fld">
+                <div class="fld-t">目标仓库</div>
+                <div class="inp" id="contribRepoAuto" hidden></div>
+                <input class="inp" id="contribRepo" hidden placeholder="用户名/仓库名，例如 octocat/hello"
+                       autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                <div class="hint" id="contribRepoHint"></div>
+              </div>
+
+              <div class="fld">
+                <div class="fld-t">目标目录</div>
+                <div class="inp" id="contribPath" readonly>—</div>
+                <div class="hint">压缩包里的目录结构会<b>原样保留</b>：里面是
+                  <code>motions/xxx.motion3.json</code>，传上去就是
+                  <code>models/用户上传/&lt;模型名&gt;/motions/xxx.motion3.json</code>。</div>
+              </div>
+
+              <div class="fld">
+                <div class="fld-t">待上传文件 <span id="contribCount"></span></div>
+                <div class="flist" id="contribFiles"></div>
+              </div>
+
+              <div class="fld">
+                <div class="fld-t">GitHub 令牌 <span style="color:var(--danger)">*</span></div>
+                <input class="inp" type="password" id="contribToken" placeholder="github_pat_… 或 ghp_…"
+                       autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                <div class="hint">
+                  需要 <b>Fine-grained personal access token</b>：只选这一个仓库、
+                  只给 <b>Contents: 读和写</b> 权限即可。
+                  <a href="https://github.com/settings/personal-access-tokens" target="_blank"
+                     rel="noopener noreferrer">在这里生成</a>。
+                  令牌<b>只从你的浏览器直接发往 api.github.com</b>，不经过也不保存到任何其它服务器。
+                </div>
+                <label class="sw"><input type="checkbox" id="contribRemember" />
+                  <span class="track"></span><span>在这台设备上记住（公用电脑别勾）</span></label>
+                <button class="btn-ghost" id="btnContribForget" type="button"
+                        style="align-self:flex-start" hidden>清除已保存的令牌</button>
+              </div>
+
+              <div class="warn-box">
+                <div>上传后这些文件会<b>公开</b>出现在仓库里，且仓库历史会一直留着它们。
+                  请确认这个模型的展示授权在你手上。</div>
+              </div>
+
+              <!-- 进度写在这里，不用舞台遮罩（遮罩在对话框下面，看不见） -->
+              <div class="modal-status" id="contribStatus" hidden>
+                <span class="loading-mini"></span><span id="contribStatusText"></span>
+              </div>
+              <div class="modal-err" id="contribErr" hidden></div>
+
+              <div class="modal-actions">
+                <button class="btn-go" id="btnContribGo" type="button">开始上传</button>
+                <button class="btn-ghost" id="btnContribCancel" type="button">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 「添加外部模型源」对话框。和本地预览 / 贡献模型一样挂在 .stage 内部
+             （全屏时舞台才是整屏）。复用同一套 .modal-wrap / .modal 样式。
+             用户填的必须是 raw 原始链接（.../refs/heads/master/models.json），
+             也可以粘一条「加速地址 + 原始链接」（前缀代理，如
+             https://gh-proxy.org/https://raw.githubusercontent.com/.../models.json）。
+             加速地址由下面的下拉框决定 —— 预览里实时显示最终会请求哪条地址。 -->
+        <div class="modal-wrap" id="srcModal" hidden>
+          <div class="modal-mask" id="srcMask"></div>
+          <div class="modal" role="dialog" aria-modal="true" aria-labelledby="srcTitle">
+            <div class="modal-head">
+              <div class="modal-title" id="srcTitle">添加外部模型仓库</div>
+              <button class="modal-x" id="btnSrcClose" type="button" aria-label="关闭对话框">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="fld">
+                <div class="fld-t">清单 URL</div>
+                <input class="inp" id="srcUrl" type="text"
+                       placeholder="https://raw.githubusercontent.com/&lt;owner&gt;/&lt;repo&gt;/refs/heads/&lt;branch&gt;/models.json"
+                       autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                <div class="hint">
+                  把别人仓库里 <code>models.json</code> 的原始链接粘过来。
+                  加速链接（<code>[加速地址]https://raw.githubusercontent.com/...</code>）也能直接粘，会被自动拆开。
+                  模型文件实际位置在那个仓库的 <code>models/</code> 子目录下，格式与本页一致（model3.json + moc3 + 贴图）。
+                </div>
+              </div>
+
+              <div class="fld">
+                <!-- 源选择：一个下拉表达「GitHub 原始 / 某个加速站 / 自定义加速地址」。
+                     value 带上前缀 accel| 是为了把一个维度塞进 select（省掉联动控件）；
+                     「自定义」那一项选中后才显示下面的小输入框（srcAccelRow）。 -->
+                <div class="fld-t">数据源</div>
+                <select class="inp sel" id="srcKind"></select>
+                <div class="src-accel-row" id="srcAccelRow" hidden>
+                  <input class="inp" id="srcAccelInput" type="text"
+                         placeholder="https://gh-proxy.org/"
+                         autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                  <div class="hint">
+                    加速地址是个<b>前缀代理</b>：最终请求 = 加速地址 + GitHub 原始地址。
+                    只写域名也行（<code>gh-proxy.org</code> 会自动补 <code>https://</code>）。
+                  </div>
+                </div>
+                <div class="hint">
+                  默认走 GitHub 原始地址（无中间人，但国内可能慢 / 被限速）。
+                  拉不到时会自动改用这里选的加速站重试一次。<br>
+                  改这里<b>不会立刻生效</b>，点「读取并添加」后才切源；
+                  点「取消」则保持原样。<b>不必刷新页面</b>。
+                </div>
+              </div>
+
+              <div class="fld">
+                <div class="fld-t">解析预览</div>
+                <div class="src-preview" id="srcPreview">
+                  <div class="src-preview-line"><span class="k">仓库</span><span class="v" id="srcRepo">—</span></div>
+                  <div class="src-preview-line"><span class="k">分支</span><span class="v" id="srcBranch">—</span></div>
+                  <div class="src-preview-line"><span class="k">生效源</span><span class="v" id="srcEffective">—</span></div>
+                </div>
+              </div>
+
+              <!-- 处理进度 / 校验失败 —— 全部写在对话框里，对话框不关，方便换一个 URL 再试 -->
+              <div class="modal-status" id="srcStatus" hidden>
+                <span class="loading-mini"></span><span id="srcStatusText"></span>
+              </div>
+              <div class="modal-err" id="srcErr" hidden></div>
+
+              <div class="warn-box">
+                <div>外部模型走第三方仓库的可用性，<b>不在本页面可控范围</b>。仓库被删 / 改路径 / 限速时该组模型可能加载失败，
+                  移除后下次打开页面也不会再出现。</div>
+              </div>
+
+              <div class="modal-actions">
+                <button class="btn-go" id="btnSrcGo" type="button">读取并添加</button>
+                <button class="btn-ghost" id="btnSrcCancel" type="button">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 部件面板右抽屉。挂在 .stage 内（全屏时舞台就是整屏）。
+             桌面/平板：从右滑入，宽 360/300px；手机：全屏铺。
+             点右下角浮动按钮切换，Esc 关闭（优先级低于本地预览 / 贡献对话框）。 -->
+        <aside class="right-pane" id="rightPane" hidden aria-label="部件面板">
+          <div class="right-tabs">
+            <button class="right-tab on" data-rtab="parts" type="button">部件</button>
+            <button class="right-tab" data-rtab="info" type="button">信息 / 诊断</button>
+            <span class="spacer"></span>
+            <span class="note" id="rightNote"></span>
+            <button class="right-x" id="btnRightClose" type="button" title="关闭（Esc）" aria-label="关闭">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round">
+                <path d="M4 4l8 8"/><path d="M12 4l-8 8"/>
+              </svg>
+            </button>
+          </div>
+          <div class="right-body">
+            <!-- 部件 tab -->
+            <div class="tab-pane" id="tabParts">
+              <div class="right-search">
+                <input type="text" id="partsSearch" placeholder="筛选部件…" autocomplete="off" spellcheck="false" />
+                <button id="partsExpand" type="button" title="全部展开">+</button>
+                <button id="partsCollapse" type="button" title="全部折叠">−</button>
+              </div>
+              <div class="right-legend">
+                勾选 = <b>显示</b> · 滑杆可半透明 · 双击行 = <b>只看它</b> · 双击空白 = 恢复<br>
+                标了<span class="pmodel">模型藏</span>的是模型自己（pose3/动作）压成 0 的，勾上会强制显示；想交还给模型用底部「清除覆盖」。
+              </div>
+              <div class="right-tree" id="partsTree"></div>
+              <div class="right-tools">
+                <button class="tbtn" id="btnClearOverrides" type="button"
+                        title="清空本面板的全部显隐覆盖，画面回到模型自己的行为">清除覆盖</button>
+                <button class="tbtn" id="btnExportShot" type="button"
+                        title="把当前画面（含你的显隐覆盖）存成 PNG">导出画面</button>
+                <button class="tbtn" id="btnExportConfig" type="button"
+                        title="把当前隐藏的部件和网格导成 JSON">导出配置</button>
+              </div>
+            </div>
+            <!-- 信息 / 诊断 tab -->
+            <div class="tab-pane right-info" id="tabInfo" hidden>
+              <div id="rightInfo"></div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- 右下角浮动按钮：打开部件面板 -->
+        <button class="parts-fab" id="btnPartsFab" type="button"
+                title="部件 / 信息 / 诊断（快捷键 P）" aria-label="打开部件面板" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="5" height="5" rx="1"/>
+            <rect x="9" y="2" width="5" height="5" rx="1"/>
+            <rect x="2" y="9" width="5" height="5" rx="1"/>
+            <rect x="9" y="9" width="5" height="5" rx="1"/>
+          </svg>
+          <span class="badge-dot" id="partsFabDot">0</span>
+        </button>
+      </div>
+
+      <div class="controls">
+        <div class="ctl">
+          <button class="icon-btn primary" id="btnPlay" title="播放 / 暂停">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" id="icoPlay"><path d="M4.4 2.9v10.2L13 8z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" id="icoPause" style="display:none"><rect x="4" y="3" width="3" height="10" rx="1"/><rect x="9" y="3" width="3" height="10" rx="1"/></svg>
+          </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="ctl">
+          <label>速度</label>
+          <input type="range" id="speed" min="10" max="300" value="100" step="10" style="width:96px;" />
+          <span class="val" id="speedVal">1.0×</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <label class="sw" title="开：舞台背景换成棋盘格，方便看模型透明 / 半透明的边缘和发光特效"><input type="checkbox" id="checkerBg" checked /><span class="track"></span><span>棋盘底</span></label>
+        <label class="sw" title="开：当前模型全部动作播完后，自动切到模型列表里的下一个（到末尾回到第一个），一直轮播下去；关：只在本模型内循环动作，不切模型"><input type="checkbox" id="listLoop" /><span class="track"></span><span>列表循环</span></label>
+        <label class="sw" title="开：播放动作时同时播放语音（仅部分模型有语音）"><input type="checkbox" id="soundEnabled" checked /><span class="track"></span><span>语音</span></label>
+        <div class="divider"></div>
+        <button class="icon-btn" id="btnReset" title="复位视图（速度 & 位置恢复默认）">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 8a5.5 5.5 0 0 1 9.4-3.9"/><path d="M13.5 8a5.5 5.5 0 0 1-9.4 3.9"/>
+            <path d="M12 1v3.4h-3.5"/><path d="M4 15v-3.4h3.5"/>
+          </svg>
+        </button>
+        <div class="divider"></div>
+        <button class="icon-btn" id="btnDownload" title="下载模型（打包 zip，含 moc3 / 贴图 / 动作 / 语音）">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 2.5v8"/><path d="M4.5 7.5 8 11l3.5-3.5"/>
+            <path d="M2.5 13h11"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端抽屉拉开时盖在舞台上的遮罩，点击即收起侧栏 -->
+  <div class="nav-scrim" id="navScrim" aria-hidden="true"></div>
+</div>
+
+<script src="assets/live2dcubismcore.min.js"></script>
+<script src="assets/pixi.min.js"></script>
+<script src="assets/cubism4.min.js"></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
